@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Portfolio — Việt Nam Style</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─────────────────────────────────────────
+   ROOT VARIABLES — Vietnamese lacquer palette
+───────────────────────────────────────── */
+:root {
+  --red:        #8B1A1A;
+  --red-deep:   #5C0E0E;
+  --red-bright: #B52B2B;
+  --gold:       #C9963C;
+  --gold-light: #E8C47A;
+  --gold-pale:  #F5E6C0;
+  --ivory:      #FAF3E0;
+  --ivory-2:    #F0E2C0;
+  --ivory-3:    #E8D5A8;
+  --ink:        #1A0A00;
+  --ink-soft:   #3D2314;
+  --ink-faint:  #6B4226;
+  --jade:       #1E5C3A;
+  --jade-light: #2E8055;
+  --bamboo:     #7A9A5A;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ─── CUSTOM CURSOR ─── */
+*, *::before, *::after { cursor: none !important; }
+#cursor {
+  width: 14px; height: 14px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  position: fixed; top:0; left:0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s, opacity 0.2s;
+  transform: translate(-50%,-50%);
+}
+#cursor-dot {
+  width: 4px; height: 4px;
+  background: var(--red);
+  border-radius: 50%;
+  position: fixed; top:0; left:0;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+}
+
+/* ─── BAMBOO SIDE NAV ─── */
+#bamboo-nav {
+  position: fixed;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.bamboo-stalk {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.bamboo-segment {
+  width: 3px;
+  height: 36px;
+  background: linear-gradient(180deg, rgba(122,154,90,0.4), rgba(122,154,90,0.2));
+  border-radius: 2px;
+}
+
+.bamboo-node {
+  position: relative;
+  width: 22px;
+  height: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bamboo-node::before {
+  content: '';
+  width: 22px; height: 3px;
+  background: rgba(122,154,90,0.5);
+  border-radius: 3px;
+  transition: background 0.3s, width 0.3s;
+}
+
+.bamboo-node.active::before,
+.bamboo-node:hover::before {
+  background: var(--gold);
+  width: 28px;
+}
+
+.bamboo-node a {
+  position: absolute;
+  left: 30px;
+  white-space: nowrap;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.3s, transform 0.3s, color 0.3s;
+  font-weight: 400;
+}
+
+.bamboo-node:hover a,
+.bamboo-node.active a {
+  opacity: 1;
+  transform: translateX(0);
+  color: var(--gold);
+}
+
+/* ─── GLOBAL SECTION HELPERS ─── */
+.gold-rule {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1rem;
+}
+.gold-rule::before, .gold-rule::after {
+  content: '';
+  height: 1px;
+  background: var(--gold);
+  flex: 1;
+}
+.gold-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); flex-shrink: 0; }
+
+.eyebrow {
+  font-size: 0.68rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 4vw, 3.5rem);
+  font-weight: 300;
+  color: var(--red-deep);
+  line-height: 1.15;
+}
+
+.section-title em { font-style: italic; color: var(--gold); }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s ease, transform 0.75s ease;
+}
+.reveal.vis { opacity: 1; transform: none; }
+
+/* ─────────────────────────────────────────
+   1. INTRODUCTION
+───────────────────────────────────────── */
+#intro {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 0 8rem 0 14rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top + Bottom accent lines */
+#intro::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0;
+  height:3px;
+  background: linear-gradient(90deg, var(--red-deep), var(--gold), var(--red-deep));
+}
+
+/* Full-height red panel right */
+.intro-red-panel {
+  position: absolute;
+  top: 0; right: 0;
+  width: 38%;
+  height: 100%;
+  background: var(--red-deep);
+  clip-path: polygon(12% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* Rotating lotus watermark */
+.intro-lotus {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 340px; height: 340px;
+  opacity: 0.08;
+  animation: spinSlow 30s linear infinite;
+}
+
+@keyframes spinSlow { to { transform: translateY(-50%) rotate(360deg); } }
+
+/* Photo frame */
+.intro-photo-wrap {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.photo-frame {
+  width: 260px; height: 320px;
+  position: relative;
+}
+
+.photo-frame-inner {
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(201,150,60,0.4);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-frame-inner img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  color: rgba(201,150,60,0.5);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Corner gold brackets */
+.photo-frame::before, .photo-frame::after,
+.frame-br::before, .frame-br::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--gold);
+  border-style: solid;
+}
+.photo-frame::before { top: -6px; left: -6px; border-width: 1.5px 0 0 1.5px; }
+.photo-frame::after  { top: -6px; right: -6px; border-width: 1.5px 1.5px 0 0; }
+.frame-br::before    { bottom: -6px; left: -6px; border-width: 0 0 1.5px 1.5px; }
+.frame-br::after     { bottom: -6px; right: -6px; border-width: 0 1.5px 1.5px 0; }
+
+/* Caption */
+.photo-caption {
+  position: absolute;
+  bottom: -40px;
+  left: 0; right: 0;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+}
+
+.intro-text { position: relative; z-index: 2; max-width: 520px; }
+
+.intro-text h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3.5rem, 6vw, 5.5rem);
+  font-weight: 300;
+  color: var(--red-deep);
+  line-height: 1.0;
+  margin-bottom: 0.6rem;
+}
+.intro-text h1 em { font-style: italic; color: var(--gold); }
+
+.intro-role {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-bottom: 2rem;
+}
+
+.intro-bio {
+  font-size: 0.93rem;
+  line-height: 1.9;
+  color: var(--ink-soft);
+  max-width: 440px;
+  margin-bottom: 2.5rem;
+  border-left: 2px solid var(--gold);
+  padding-left: 1.2rem;
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-faint);
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  z-index: 2;
+  animation: bounce 2s ease-in-out infinite;
+}
+.scroll-hint svg { opacity: 0.5; }
+@keyframes bounce { 0%,100%{ transform:translateX(-50%) translateY(0);} 50%{ transform:translateX(-50%) translateY(6px);} }
+
+/* ─────────────────────────────────────────
+   2. ABOUT ME — Strengths & Weaknesses
+───────────────────────────────────────── */
+#about {
+  padding: 9rem 8rem 9rem 14rem;
+  background: var(--ivory);
+  position: relative;
+}
+
+#about::before {
+  content:''; position:absolute; top:0; left:8rem; right:8rem;
+  height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  max-width: 960px;
+}
+
+.about-intro {
+  grid-column: 1 / -1;
+  max-width: 600px;
+}
+
+.about-intro p {
+  font-size: 0.95rem; line-height:1.9; color:var(--ink-soft); margin-top:1.2rem;
+}
+
+/* SW cards */
+.sw-column h3 {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem; font-weight:400;
+  color:var(--red-deep); margin-bottom:1.5rem;
+  display:flex; align-items:center; gap:0.8rem;
+}
+
+.sw-column h3 .sw-icon {
+  width:32px; height:32px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem;
+}
+
+.sw-strength h3 .sw-icon { background:rgba(139,26,26,0.1); color:var(--red); }
+.sw-weakness h3 .sw-icon { background:rgba(201,150,60,0.15); color:var(--gold); }
+
+.sw-item {
+  display: flex; gap:1rem; align-items:flex-start;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid transparent;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.sw-item:hover {
+  border-color: var(--gold-light);
+  background: rgba(201,150,60,0.04);
+}
+
+.sw-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.sw-strength .sw-dot { background: var(--red); }
+.sw-weakness .sw-dot { background: var(--gold); }
+
+.sw-item-title {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.sw-item-desc { font-size: 0.85rem; line-height:1.7; color:var(--ink-faint); }
+
+/* Add yours hint */
+.add-hint {
+  font-size: 0.72rem;
+  letter-spacing:0.1em;
+  color: rgba(139,26,26,0.35);
+  font-style:italic;
+  margin-top:0.5rem;
+  padding-left:1.2rem;
+}
+
+/* ─────────────────────────────────────────
+   3. EDUCATION
+───────────────────────────────────────── */
+#education {
+  padding: 9rem 8rem 9rem 14rem;
+  background: var(--red-deep);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Diamond grid pattern */
+#education::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(201,150,60,0.05) 0px, rgba(201,150,60,0.05) 1px, transparent 1px, transparent 28px),
+    repeating-linear-gradient(-45deg, rgba(201,150,60,0.05) 0px, rgba(201,150,60,0.05) 1px, transparent 1px, transparent 28px);
+  pointer-events:none;
+}
+
+#education .section-title { color: var(--gold-pale); }
+#education .eyebrow { color: var(--gold-light); }
+
+.edu-timeline {
+  position: relative;
+  max-width: 760px;
+  margin-top: 4rem;
+  padding-left: 3rem;
+}
+
+/* Vertical thread */
+.edu-timeline::before {
+  content:'';
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:1px;
+  background: linear-gradient(180deg, var(--gold), rgba(201,150,60,0.1));
+}
+
+.edu-item {
+  position: relative;
+  margin-bottom: 3.5rem;
+}
+
+.edu-item::before {
+  content:'';
+  position:absolute;
+  left:-3rem;
+  top:6px;
+  width:10px; height:10px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+
+.edu-item::after {
+  content:'';
+  position:absolute;
+  left:calc(-3rem + 4px);
+  top:10px;
+  width:2px; height:2px;
+  background: var(--red-deep);
+}
+
+.edu-year {
+  font-size:0.7rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:0.5rem;
+}
+
+.edu-degree {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.7rem;
+  font-weight:300;
+  color:var(--gold-pale);
+  line-height:1.2;
+  margin-bottom:0.3rem;
+}
+
+.edu-school {
+  font-size:0.85rem;
+  color:rgba(245,230,192,0.6);
+  margin-bottom:0.8rem;
+  font-style:italic;
+}
+
+.edu-desc {
+  font-size:0.88rem;
+  line-height:1.8;
+  color:rgba(245,230,192,0.5);
+  max-width:520px;
+  border-left:1px solid rgba(201,150,60,0.25);
+  padding-left:1rem;
+}
+
+/* ─────────────────────────────────────────
+   4. EXPERIENCE & ACHIEVEMENTS
+───────────────────────────────────────── */
+#experience {
+  padding: 9rem 8rem 9rem 14rem;
+  background: var(--ivory-2);
+  position: relative;
+}
+
+#experience::before {
+  content:''; position:absolute; top:0; left:8rem; right:8rem;
+  height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5px;
+  max-width: 880px;
+  margin-top: 3.5rem;
+  border: 1px solid var(--gold-light);
+}
+
+.exp-card {
+  padding: 2.5rem 2rem;
+  background: var(--ivory);
+  border-right: 1px solid var(--gold-light);
+  border-bottom: 1px solid var(--gold-light);
+  position: relative;
+  transition: background 0.35s;
+  overflow: hidden;
+}
+
+.exp-card:nth-child(2n) { border-right: none; }
+
+.exp-card::before {
+  content: attr(data-num);
+  position:absolute; top:1.5rem; right:1.5rem;
+  font-family:'Cormorant Garamond',serif;
+  font-size:4rem; font-weight:300;
+  color:rgba(139,26,26,0.06);
+  line-height:1;
+  transition:color 0.3s;
+}
+
+.exp-card:hover { background: var(--red-deep); }
+.exp-card:hover::before { color:rgba(201,150,60,0.12); }
+.exp-card:hover .exp-title,
+.exp-card:hover .exp-company,
+.exp-card:hover .exp-desc { color:var(--gold-pale); }
+.exp-card:hover .exp-tag { border-color:rgba(201,150,60,0.3); color:var(--gold-light); }
+.exp-card:hover .exp-period { color:var(--gold); }
+
+.exp-period {
+  font-size:0.68rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:0.7rem;
+  transition:color 0.3s;
+}
+
+.exp-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem; font-weight:400;
+  color:var(--red-deep);
+  margin-bottom:0.2rem;
+  transition:color 0.3s;
+}
+
+.exp-company {
+  font-size:0.8rem;
+  color:var(--ink-faint);
+  margin-bottom:1rem;
+  font-style:italic;
+  transition:color 0.3s;
+}
+
+.exp-desc {
+  font-size:0.87rem;
+  line-height:1.75;
+  color:var(--ink-soft);
+  margin-bottom:1.2rem;
+  transition:color 0.3s;
+}
+
+.exp-tags { display:flex; flex-wrap:wrap; gap:0.4rem; }
+
+.exp-tag {
+  padding:0.25rem 0.7rem;
+  border:1px solid var(--gold-light);
+  font-size:0.65rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  transition:all 0.3s;
+}
+
+/* Achievement star badge */
+.achievement-badge {
+  position:absolute;
+  bottom:1.5rem; right:1.5rem;
+  display:flex; align-items:center; gap:0.4rem;
+  font-size:0.65rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--gold);
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.exp-card:hover .achievement-badge { opacity:1; }
+
+/* ─────────────────────────────────────────
+   5. ROADMAP — Galactic Orbit
+───────────────────────────────────────── */
+#roadmap {
+  padding: 9rem 4rem 9rem 14rem;
+  background: #0A0402;
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+/* Star field canvas */
+#starfield {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+/* Milky way gradient glow */
+#roadmap::before {
+  content:'';
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 60% 30% at 50% 50%, rgba(139,26,26,0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 10% at 50% 55%, rgba(201,150,60,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+#roadmap .section-title { color: var(--gold-pale); }
+#roadmap .eyebrow { color: rgba(201,150,60,0.7); }
+#roadmap .gold-rule::before, #roadmap .gold-rule::after { background:rgba(201,150,60,0.25); }
+#roadmap .gold-diamond { background:rgba(201,150,60,0.5); }
+
+.roadmap-orbit-wrap {
+  position: relative;
+  margin-top: 4rem;
+  height: 520px;
+  max-width: 960px;
+}
+
+/* SVG orbit path drawn by JS */
+#orbit-svg {
+  position:absolute;
+  inset:0;
+  width:100%; height:100%;
+  overflow:visible;
+}
+
+/* Orbit nodes */
+.orbit-node {
+  position:absolute;
+  transform:translate(-50%,-50%);
+  cursor:pointer;
+}
+
+.orbit-node-ring {
+  width:18px; height:18px;
+  border-radius:50%;
+  background:var(--red-deep);
+  border:2px solid var(--gold);
+  transition:transform 0.3s, box-shadow 0.3s;
+  position:relative;
+  z-index:2;
+}
+
+.orbit-node:hover .orbit-node-ring,
+.orbit-node.active .orbit-node-ring {
+  transform:scale(1.4);
+  box-shadow:0 0 16px rgba(201,150,60,0.6);
+}
+
+.orbit-node-pulse {
+  position:absolute;
+  inset:-6px;
+  border-radius:50%;
+  border:1px solid rgba(201,150,60,0.3);
+  animation:pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,100%{ transform:scale(1); opacity:0.6; }
+  50%     { transform:scale(1.5); opacity:0; }
+}
+
+.orbit-label {
+  position:absolute;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+.orbit-label-year {
+  font-size:0.62rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--gold);
+}
+
+.orbit-label-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;
+  font-weight:300;
+  color:var(--gold-pale);
+  margin-top:0.1rem;
+}
+
+.orbit-label-desc {
+  font-size:0.75rem;
+  color:rgba(245,230,192,0.45);
+  margin-top:0.15rem;
+  max-width:160px;
+  line-height:1.5;
+}
+
+/* Detail popup */
+.orbit-detail {
+  position:absolute;
+  background:rgba(92,14,14,0.95);
+  border:1px solid rgba(201,150,60,0.35);
+  padding:1.5rem;
+  width:220px;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity 0.3s;
+  z-index:10;
+}
+.orbit-detail.show { opacity:1; }
+.orbit-detail-year { font-size:0.62rem; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; }
+.orbit-detail-title { font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--gold-pale); margin:0.4rem 0 0.3rem; }
+.orbit-detail-body { font-size:0.8rem; line-height:1.6; color:rgba(245,230,192,0.6); }
+
+/* "You are here" sun */
+.orbit-sun {
+  position:absolute;
+  width:40px; height:40px;
+  border-radius:50%;
+  background:radial-gradient(circle, #E8C47A 0%, #C9963C 50%, rgba(201,150,60,0.1) 100%);
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 24px rgba(201,150,60,0.5), 0 0 48px rgba(201,150,60,0.2);
+  animation:sunPulse 4s ease-in-out infinite;
+}
+@keyframes sunPulse {
+  0%,100%{ box-shadow:0 0 24px rgba(201,150,60,0.5), 0 0 48px rgba(201,150,60,0.2); }
+  50%    { box-shadow:0 0 32px rgba(201,150,60,0.8), 0 0 64px rgba(201,150,60,0.35); }
+}
+.sun-label {
+  position:absolute;
+  top:28px; left:50%;
+  transform:translateX(-50%);
+  font-size:0.6rem;
+  letter-spacing:0.2em;
+  color:var(--gold-light);
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+/* Orbit comet trail dot */
+#comet {
+  position:absolute;
+  width:6px; height:6px;
+  border-radius:50%;
+  background:var(--gold-light);
+  transform:translate(-50%,-50%);
+  box-shadow:0 0 8px var(--gold);
+  pointer-events:none;
+  z-index:5;
+}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  background:var(--ink);
+  padding:2.5rem 8rem 2.5rem 14rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-top:1px solid rgba(201,150,60,0.15);
+}
+
+.footer-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;
+  color:var(--gold);
+  font-weight:300;
+  font-style:italic;
+}
+
+.footer-note {
+  font-size:0.7rem;
+  letter-spacing:0.1em;
+  color:rgba(201,150,60,0.35);
+}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  #intro { padding:5rem 2rem 5rem 5rem; }
+  .intro-red-panel { display:none; }
+  .intro-photo-wrap { display:none; }
+  #about, #education, #experience { padding:6rem 2rem 6rem 5rem; }
+  #roadmap { padding:6rem 2rem 6rem 5rem; }
+  .about-grid, .exp-grid { grid-template-columns:1fr; }
+  footer { padding:2rem; flex-direction:column; gap:1rem; text-align:center; }
+  #bamboo-nav { display:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Custom cursor -->
+<div id="cursor"></div>
+<div id="cursor-dot"></div>
+
+<!-- ─── BAMBOO SIDE NAV ─── -->
+<nav id="bamboo-nav">
+  <div class="bamboo-stalk">
+    <div class="bamboo-segment" style="height:20px"></div>
+
+    <div class="bamboo-node active" data-target="intro">
+      <a href="#intro">Introduction</a>
+    </div>
+    <div class="bamboo-segment"></div>
+
+    <div class="bamboo-node" data-target="about">
+      <a href="#about">About Me</a>
+    </div>
+    <div class="bamboo-segment"></div>
+
+    <div class="bamboo-node" data-target="education">
+      <a href="#education">Education</a>
+    </div>
+    <div class="bamboo-segment"></div>
+
+    <div class="bamboo-node" data-target="experience">
+      <a href="#experience">Experience</a>
+    </div>
+    <div class="bamboo-segment"></div>
+
+    <div class="bamboo-node" data-target="roadmap">
+      <a href="#roadmap">Roadmap</a>
+    </div>
+    <div class="bamboo-segment" style="height:20px"></div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════
+     1. INTRODUCTION
+════════════════════════════════════ -->
+<section id="intro">
+  <div class="intro-red-panel">
+    <!-- Lotus watermark -->
+    <svg class="intro-lotus" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(150,150)">
+        <ellipse rx="50" ry="140" fill="none" stroke="#C9963C" stroke-width="1.5"/>
+        <ellipse rx="50" ry="140" fill="none" stroke="#C9963C" stroke-width="1.5" transform="rotate(30)"/>
+        <ellipse rx="50" ry="140" fill="none" stroke="#C9963C" stroke-width="1.5" transform="rotate(60)"/>
+        <ellipse rx="50" ry="140" fill="none" stroke="#C9963C" stroke-width="1.5" transform="rotate(90)"/>
+        <ellipse rx="50" ry="140" fill="none" stroke="#C9963C" stroke-width="1.5" transform="rotate(120)"/>
+        <ellipse rx="50" ry="140" fill="none" stroke="#C9963C" stroke-width="1.5" transform="rotate(150)"/>
+        <circle r="18" fill="none" stroke="#C9963C" stroke-width="1.5"/>
+        <circle r="50" fill="none" stroke="#C9963C" stroke-width="0.5" stroke-dasharray="3 6"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Photo frame -->
+  <div class="intro-photo-wrap reveal">
+    <div class="photo-frame">
+      <div class="photo-frame-inner">
+        <!-- REPLACE src with your actual image path, e.g. src="my-photo.jpg" -->
+        <div class="photo-placeholder">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="18" r="8" stroke="rgba(201,150,60,0.5)" stroke-width="1.5"/>
+            <path d="M8 42 Q8 30 24 30 Q40 30 40 42" stroke="rgba(201,150,60,0.5)" stroke-width="1.5" fill="none"/>
+          </svg>
+          <span>Your Photo Here</span>
+          <span style="font-size:0.6rem;opacity:0.5">Replace with &lt;img&gt;</span>
+        </div>
+      </div>
+      <div class="frame-br"></div>
+    </div>
+    <!-- REPLACE with your name -->
+    <div class="photo-caption">Your Name Here</div>
+  </div>
+
+  <div class="intro-text">
+    <span class="eyebrow reveal">Welcome to my portfolio</span>
+
+    <!-- REPLACE with your name -->
+    <h1 class="reveal">
+      Your<br><em>Name</em><br>Here
+    </h1>
+
+    <!-- REPLACE with your role/title -->
+    <p class="intro-role reveal">Your Role / Title / Tagline</p>
+
+    <!-- REPLACE with your personal introduction -->
+    <p class="intro-bio reveal">
+      Write your introduction here. Tell the reader who you are, where you come from, and what drives you. Make it personal and authentic — this is your first impression.
+    </p>
+  </div>
+
+  <div class="scroll-hint reveal">
+    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1"/>
+      <circle cx="8" cy="7" r="2" fill="currentColor"><animate attributeName="cy" values="7;14;7" dur="2s" repeatCount="indefinite"/></circle>
+    </svg>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     2. ABOUT ME
+════════════════════════════════════ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-intro reveal">
+      <span class="eyebrow">About Me</span>
+      <h2 class="section-title">Who I <em>Am</em></h2>
+      <div class="gold-rule"><div class="gold-diamond"></div></div>
+      <!-- REPLACE with your personal story -->
+      <p>Write a few sentences about yourself here. Your personality, your values, what makes you unique as a person and a professional. This is the place to go deeper than the introduction — share what motivates you, what you believe in, and how you approach your work and life.</p>
+    </div>
+
+    <!-- STRENGTHS — replace each item with your own -->
+    <div class="sw-column sw-strength reveal">
+      <h3>
+        <span class="sw-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L10 6H15L11 9.5L12.5 15L8 12L3.5 15L5 9.5L1 6H6L8 1Z" fill="currentColor"/></svg>
+        </span>
+        Strengths
+      </h3>
+
+      <div class="sw-item">
+        <div class="sw-dot"></div>
+        <div>
+          <div class="sw-item-title">Strength Title 1</div>
+          <div class="sw-item-desc">Describe this strength briefly — how it shows up in your work and what it enables you to do.</div>
+        </div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-dot"></div>
+        <div>
+          <div class="sw-item-title">Strength Title 2</div>
+          <div class="sw-item-desc">Describe this strength. Be specific — generic claims like "hard worker" are less convincing than examples.</div>
+        </div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-dot"></div>
+        <div>
+          <div class="sw-item-title">Strength Title 3</div>
+          <div class="sw-item-desc">What's something you do naturally well that others notice?</div>
+        </div>
+      </div>
+
+      <p class="add-hint">+ Add more strengths as needed</p>
+    </div>
+
+    <!-- WEAKNESSES — replace each item with your own -->
+    <div class="sw-column sw-weakness reveal">
+      <h3>
+        <span class="sw-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="11" r="0.75" fill="currentColor"/></svg>
+        </span>
+        Weaknesses
+      </h3>
+
+      <div class="sw-item">
+        <div class="sw-dot"></div>
+        <div>
+          <div class="sw-item-title">Weakness Title 1</div>
+          <div class="sw-item-desc">Be honest and reflective. Show self-awareness — and optionally mention what you are doing to improve.</div>
+        </div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-dot"></div>
+        <div>
+          <div class="sw-item-title">Weakness Title 2</div>
+          <div class="sw-item-desc">A genuine weakness shows maturity. Pair it with what you've learned or how you manage it.</div>
+        </div>
+      </div>
+
+      <div class="sw-item">
+        <div class="sw-dot"></div>
+        <div>
+          <div class="sw-item-title">Weakness Title 3</div>
+          <div class="sw-item-desc">What's an area you're actively working to grow in?</div>
+        </div>
+      </div>
+
+      <p class="add-hint">+ Add more if you wish</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     3. EDUCATION
+════════════════════════════════════ -->
+<section id="education">
+  <span class="eyebrow reveal">Academic Journey</span>
+  <h2 class="section-title reveal">Education</h2>
+  <div class="gold-rule reveal" style="max-width:320px"><div class="gold-diamond" style="background:rgba(201,150,60,0.6)"></div></div>
+
+  <div class="edu-timeline">
+
+    <!-- REPLACE each edu-item with your real education -->
+    <div class="edu-item reveal">
+      <div class="edu-year">20XX – 20XX</div>
+      <div class="edu-degree">Your Degree / Certificate Title</div>
+      <div class="edu-school">Name of School / University — City, Country</div>
+      <div class="edu-desc">Brief description of what you studied, specialised in, or achieved during this time. Mention relevant courses, thesis topic, or GPA if you wish.</div>
+    </div>
+
+    <div class="edu-item reveal">
+      <div class="edu-year">20XX – 20XX</div>
+      <div class="edu-degree">Another Degree or Qualification</div>
+      <div class="edu-school">Name of Institution — City</div>
+      <div class="edu-desc">What did you learn here? Any notable academic achievements, honours, or extracurricular involvement?</div>
+    </div>
+
+    <div class="edu-item reveal">
+      <div class="edu-year">20XX</div>
+      <div class="edu-degree">Certificate / Short Course / Exchange</div>
+      <div class="edu-school">Institution Name</div>
+      <div class="edu-desc">Optional third entry — could be a certification, workshop, or exchange programme.</div>
+    </div>
+
+    <p class="add-hint" style="color:rgba(201,150,60,0.25)">+ Add more education entries as needed</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     4. EXPERIENCE & ACHIEVEMENTS
+════════════════════════════════════ -->
+<section id="experience">
+  <span class="eyebrow reveal">Career & Achievements</span>
+  <h2 class="section-title reveal">Experience</h2>
+  <div class="gold-rule reveal" style="max-width:320px"><div class="gold-diamond"></div></div>
+
+  <div class="exp-grid">
+
+    <!-- REPLACE each card with your real experience -->
+    <div class="exp-card reveal" data-num="01">
+      <div class="exp-period">20XX – Present</div>
+      <div class="exp-title">Your Job Title</div>
+      <div class="exp-company">Company / Organisation Name</div>
+      <div class="exp-desc">Describe what you do / did here. Focus on impact — what did you build, lead, or improve? Quantify if possible (e.g., "increased X by 30%").</div>
+      <div class="exp-tags">
+        <span class="exp-tag">Skill 1</span>
+        <span class="exp-tag">Skill 2</span>
+        <span class="exp-tag">Skill 3</span>
+      </div>
+      <div class="achievement-badge">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><polygon points="5,0 6.5,3.5 10,3.8 7.5,6 8.2,10 5,8.2 1.8,10 2.5,6 0,3.8 3.5,3.5"/></svg>
+        Key achievement
+      </div>
+    </div>
+
+    <div class="exp-card reveal" data-num="02">
+      <div class="exp-period">20XX – 20XX</div>
+      <div class="exp-title">Previous Role</div>
+      <div class="exp-company">Another Company / Project</div>
+      <div class="exp-desc">What was your role here? What problems did you solve? What did you learn that shaped who you are today?</div>
+      <div class="exp-tags">
+        <span class="exp-tag">Skill A</span>
+        <span class="exp-tag">Skill B</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal" data-num="03">
+      <div class="exp-period">20XX</div>
+      <div class="exp-title">Project / Award / Achievement</div>
+      <div class="exp-company">Context or Organisation</div>
+      <div class="exp-desc">This card can be used for a notable project, competition award, or volunteer experience. What made it meaningful?</div>
+      <div class="exp-tags">
+        <span class="exp-tag">Tag 1</span>
+        <span class="exp-tag">Tag 2</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal" data-num="04">
+      <div class="exp-period">20XX</div>
+      <div class="exp-title">Another Experience</div>
+      <div class="exp-company">Organisation / Context</div>
+      <div class="exp-desc">Add as many cards as you need. Delete this one if you only have three entries, or duplicate it for more.</div>
+      <div class="exp-tags">
+        <span class="exp-tag">Tag X</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════
+     5. ROADMAP — Galactic Orbit
+════════════════════════════════════ -->
+<section id="roadmap">
+  <canvas id="starfield"></canvas>
+
+  <div style="position:relative;z-index:2">
+    <span class="eyebrow reveal">The Journey Ahead</span>
+    <h2 class="section-title reveal">Roadmap</h2>
+    <div class="gold-rule reveal" style="max-width:320px">
+      <div class="gold-diamond" style="background:rgba(201,150,60,0.4)"></div>
+    </div>
+    <p class="reveal" style="font-size:0.85rem;color:rgba(245,230,192,0.4);margin-top:0.8rem;max-width:420px;line-height:1.7">
+      Like the Earth tracing its path through the Milky Way — every orbit is a chapter, every node a milestone. Hover to explore.
+    </p>
+  </div>
+
+  <div class="roadmap-orbit-wrap reveal" id="orbit-wrap">
+    <svg id="orbit-svg"></svg>
+    <!-- Sun (you are here) -->
+    <div class="orbit-sun" id="orbit-sun">
+      <div class="sun-label">Now</div>
+    </div>
+    <!-- Comet -->
+    <div id="comet"></div>
+  </div>
+</section>
+
+<footer>
+  <!-- REPLACE with your name -->
+  <div class="footer-name">Your Name</div>
+  <div class="footer-note">© 2026 — Portfolio crafted with Vietnamese spirit</div>
+</footer>
+
+<!-- ═══════════════════════════════
+  JAVASCRIPT
+════════════════════════════════ -->
+<script>
+// ─── CURSOR ───
+const cur = document.getElementById('cursor');
+const dot = document.getElementById('cursor-dot');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+(function loop(){ cx+=(mx-cx)*0.12; cy+=(my-cy)*0.12; cur.style.left=cx+'px'; cur.style.top=cy+'px'; requestAnimationFrame(loop); })();
+
+// ─── SCROLL REVEAL ───
+const revEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){
+      setTimeout(()=>e.target.classList.add('vis'), i*80);
+      ro.unobserve(e.target);
+    }
+  });
+},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+revEls.forEach(el=>ro.observe(el));
+
+// ─── BAMBOO NAV — active on scroll ───
+const secs = ['intro','about','education','experience','roadmap'];
+const nodes = document.querySelectorAll('.bamboo-node');
+const scrollSpy = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      nodes.forEach(n=>n.classList.remove('active'));
+      const match = document.querySelector(`.bamboo-node[data-target="${e.target.id}"]`);
+      if(match) match.classList.add('active');
+    }
+  });
+},{threshold:0.4});
+secs.forEach(id=>{ const el=document.getElementById(id); if(el) scrollSpy.observe(el); });
+
+// ─── STARFIELD ───
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars=[];
+
+function resizeCanvas(){
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+
+function initStars(){
+  stars=[];
+  for(let i=0;i<280;i++){
+    stars.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height,
+      r:Math.random()*1.4+0.2,
+      o:Math.random()*0.7+0.1,
+      s:Math.random()*0.4+0.1,
+      t:Math.random()*Math.PI*2
+    });
+  }
+}
+
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    s.t+=0.008;
+    const blink = s.o*(0.7+0.3*Math.sin(s.t));
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(245,230,192,${blink})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawStars);
+}
+
+window.addEventListener('resize',()=>{ resizeCanvas(); initStars(); });
+setTimeout(()=>{ resizeCanvas(); initStars(); drawStars(); },300);
+
+// ─── ORBIT ROADMAP ───
+// ★ EDIT THESE to your own milestones ★
+const milestones = [
+  { year:'20XX', title:'Born / Early Years', desc:'Where it all began — your origin story.', side:'above' },
+  { year:'20XX', title:'First Big Step',     desc:'Your first meaningful achievement or turning point.', side:'below' },
+  { year:'20XX', title:'Education Begins',   desc:'Describe this milestone briefly.', side:'above' },
+  { year:'20XX', title:'Key Achievement',    desc:'Something you are proud of. Could be a project, award, or realisation.', side:'below' },
+  { year:'20XX', title:'Career Start',       desc:'When professional life began to take shape.', side:'above' },
+  { year:'Now',  title:'Present Day',        desc:'Where you stand today, looking forward.', side:'below' },
+  { year:'20XX', title:'Near Goal',          desc:'Something you plan to achieve soon.', side:'above', future:true },
+  { year:'20XX+',title:'Dream Milestone',    desc:'Your big, long-term aspiration.', side:'below', future:true },
+];
+
+function buildOrbit(){
+  const wrap = document.getElementById('orbit-wrap');
+  const svg  = document.getElementById('orbit-svg');
+  const sun  = document.getElementById('orbit-sun');
+  const comet= document.getElementById('comet');
+
+  const W = wrap.offsetWidth;
+  const H = 520;
+  wrap.style.height = H+'px';
+
+  // Ellipse parameters
+  const cx = W * 0.45;
+  const cy = H * 0.5;
+  const rx = W * 0.38;
+  const ry = H * 0.34;
+
+  // Sun position — slightly left of centre
+  sun.style.left = (cx - rx*0.05)+'px';
+  sun.style.top  = cy+'px';
+
+  // Draw orbit ellipse
+  svg.innerHTML='';
+  const ns = 'http://www.w3.org/2000/svg';
+
+  // Dashed ellipse (main orbit)
+  const mainEl = document.createElementNS(ns,'ellipse');
+  mainEl.setAttribute('cx',cx); mainEl.setAttribute('cy',cy);
+  mainEl.setAttribute('rx',rx); mainEl.setAttribute('ry',ry);
+  mainEl.setAttribute('fill','none');
+  mainEl.setAttribute('stroke','rgba(201,150,60,0.18)');
+  mainEl.setAttribute('stroke-width','1');
+  mainEl.setAttribute('stroke-dasharray','4 8');
+  svg.appendChild(mainEl);
+
+  // Outer glow ellipse
+  const glowEl = document.createElementNS(ns,'ellipse');
+  glowEl.setAttribute('cx',cx); glowEl.setAttribute('cy',cy);
+  glowEl.setAttribute('rx',rx+12); glowEl.setAttribute('ry',ry+12);
+  glowEl.setAttribute('fill','none');
+  glowEl.setAttribute('stroke','rgba(201,150,60,0.04)');
+  glowEl.setAttribute('stroke-width','20');
+  svg.insertBefore(glowEl, mainEl);
+
+  // Milky way band
+  const bandEl = document.createElementNS(ns,'ellipse');
+  bandEl.setAttribute('cx',cx); bandEl.setAttribute('cy',cy);
+  bandEl.setAttribute('rx',rx*1.25); bandEl.setAttribute('ry',ry*0.18);
+  bandEl.setAttribute('fill','rgba(201,150,60,0.03)');
+  bandEl.setAttribute('transform',`rotate(-10 ${cx} ${cy})`);
+  svg.insertBefore(bandEl, svg.firstChild);
+
+  // Place nodes evenly around the ellipse
+  // Start from left (-180°) and go around
+  const n = milestones.length;
+  const nodes = [];
+  milestones.forEach((m, i) => {
+    const angle = -Math.PI + (i / (n-1)) * Math.PI; // -180° to 0° (bottom half, then top)
+    const nx = cx + rx * Math.cos(angle);
+    const ny = cy + ry * Math.sin(angle);
+
+    // Draw line from sun to node for future items
+    if(m.future){
+      const lineEl = document.createElementNS(ns,'line');
+      lineEl.setAttribute('x1',cx); lineEl.setAttribute('y1',cy);
+      lineEl.setAttribute('x2',nx); lineEl.setAttribute('y2',ny);
+      lineEl.setAttribute('stroke','rgba(201,150,60,0.08)');
+      lineEl.setAttribute('stroke-width','0.5');
+      lineEl.setAttribute('stroke-dasharray','2 6');
+      svg.appendChild(lineEl);
+    }
+
+    // Node element
+    const nodeEl = document.createElement('div');
+    nodeEl.className = 'orbit-node' + (m.future ? ' future' : '');
+    nodeEl.style.left = nx+'px';
+    nodeEl.style.top  = ny+'px';
+    nodeEl.innerHTML = `
+      <div class="orbit-node-ring" style="${m.future?'opacity:0.45;border-style:dashed':''}"></div>
+      <div class="orbit-node-pulse"></div>
+    `;
+
+    // Label — alternate above/below
+    const labelEl = document.createElement('div');
+    labelEl.className = 'orbit-label';
+    const isAbove = m.side==='above';
+    labelEl.style.cssText = isAbove
+      ? 'bottom:20px;left:50%;transform:translateX(-50%);text-align:center;'
+      : 'top:20px;left:50%;transform:translateX(-50%);text-align:center;';
+    labelEl.innerHTML=`
+      <div class="orbit-label-year">${m.year}</div>
+      <div class="orbit-label-title">${m.title}</div>
+      <div class="orbit-label-desc">${m.desc}</div>
+    `;
+    nodeEl.appendChild(labelEl);
+    wrap.appendChild(nodeEl);
+    nodes.push({el:nodeEl, x:nx, y:ny, angle});
+  });
+
+  // Animate comet along orbit
+  let cAngle = -Math.PI;
+  function animComet(){
+    cAngle += 0.006;
+    if(cAngle > 0) cAngle = -Math.PI;
+    const cx2 = cx + rx*Math.cos(cAngle);
+    const cy2 = cy + ry*Math.sin(cAngle);
+    comet.style.left = cx2+'px';
+    comet.style.top  = cy2+'px';
+    requestAnimationFrame(animComet);
+  }
+  setTimeout(animComet, 600);
+}
+
+// Build after fonts/layout settle
+window.addEventListener('load', ()=>{ setTimeout(buildOrbit, 400); });
+window.addEventListener('resize', ()=>{ setTimeout(buildOrbit, 200); });
+</script>
+</body>
+</html>
